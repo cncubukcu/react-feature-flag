@@ -18,6 +18,7 @@ export const useFeatureFlag = (key) => {
   }
 
   const { getFeatureFlag } = context;
+  if (Array.isArray(key)) return key.map(k => getFeatureFlag(k));
 
   return getFeatureFlag(key);
 };
