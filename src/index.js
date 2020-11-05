@@ -3,10 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import featureConfig from './featureConfig';
+import { FeatureFlagProvider } from './FeatureFlag';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <FeatureFlagProvider config={featureConfig}>
+      <App />
+    </FeatureFlagProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
