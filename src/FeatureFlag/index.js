@@ -1,1 +1,1 @@
-export { FeatureFlagProvider, useFeatureFlag } from './FeatureFlag';
+export { FeatureFlagProvider, useFeatureFlag, getFeatureFlag } from './FeatureFlag';

@@ -11,6 +11,10 @@ const FeatureFlagContext = createContext({
   flags: {},
 });
 
+export let getFeatureFlag = (key) => {
+  console.error('Feature Flag Provider has not initialize yet!');
+}
+
 export const useFeatureFlag = (key) => {
   const context = useContext(FeatureFlagContext);
   if (!context) {
@@ -18,7 +22,6 @@ export const useFeatureFlag = (key) => {
   }
 
   const { getFeatureFlag } = context;
-  if (Array.isArray(key)) return key.map(k => getFeatureFlag(k));
 
   return getFeatureFlag(key);
 };
@@ -52,8 +55,9 @@ export class FeatureFlagProvider extends PureComponent {
       handleFeatureToggleChange: this.handleFeatureToggleChange,
       handleOptionValueChange: this.handleOptionValueChange,
       getFeatureFlag: this.getFeatureFlag,
-
     };
+
+    getFeatureFlag = this.getFeatureFlag;
   }
 
   handleFeatureToggleChange = (id) => (e) => {
@@ -93,11 +97,17 @@ export class FeatureFlagProvider extends PureComponent {
     });
   };
 
-  getFeatureFlag = (key) => {
+  _getFeatureFlag = key => {
     if (this.state.flags[key] === undefined) {
       console.error(`You should add ${key} to your config Object`);
     }
     return this.state.flags[key];
+  }
+
+  getFeatureFlag = (key) => {
+    if (Array.isArray(key)) return key.map(k => this._getFeatureFlag(k));
+
+    return this._getFeatureFlag(key);
   }
 
   render() {
