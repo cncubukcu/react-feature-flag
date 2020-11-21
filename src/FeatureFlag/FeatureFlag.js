@@ -1,12 +1,10 @@
 /* eslint-disable react/no-unused-state */
 import React, { createContext, useContext, PureComponent } from 'react';
-import { arrayOf, shape, string } from 'prop-types';
+import { arrayOf, bool, shape, string } from 'prop-types';
 import FeatureFlagPanel from './FeatureFlagPanel';
 
 const FeatureFlagContext = createContext({
   config: {},
-  handleFeatureToggleChange: () => { },
-  handleOptionValueChange: () => { },
   getFeatureFlag: () => { },
   flags: {},
 });
@@ -52,8 +50,6 @@ export class FeatureFlagProvider extends PureComponent {
           acc[currentFeature.key] = currentFeature.value;
           return acc;
         }, {}),
-      handleFeatureToggleChange: this.handleFeatureToggleChange,
-      handleOptionValueChange: this.handleOptionValueChange,
       getFeatureFlag: this.getFeatureFlag,
     };
 
@@ -111,16 +107,18 @@ export class FeatureFlagProvider extends PureComponent {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, isPanelOpen } = this.props;
     return (
       <FeatureFlagContext.Provider value={this.state}>
         {children}
-        <FeatureFlagPanel
-          config={this.state.config}
-          flags={this.state.flags}
-          handleFeatureToggleChange={this.state.handleFeatureToggleChange}
-          handleOptionValueChange={this.state.handleOptionValueChange}
-        />
+        {isPanelOpen && (
+          <FeatureFlagPanel
+            config={this.state.config}
+            flags={this.state.flags}
+            handleFeatureToggleChange={this.handleFeatureToggleChange}
+            handleOptionValueChange={this.handleOptionValueChange}
+          />
+        )}
       </FeatureFlagContext.Provider>
     );
   }
@@ -135,8 +133,10 @@ FeatureFlagProvider.propTypes = {
       value: string,
     }))
   })),
+  isPanelOpen: bool,
 };
 
 FeatureFlagProvider.defaultProps = {
   config: [],
+  isPanelOpen: true,
 };
