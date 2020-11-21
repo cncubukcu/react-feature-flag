@@ -13,9 +13,16 @@ const FeatureFlagPanel = ({
 }) => {
   const [isFeatureToggleContentOpen, setIsFeatureToggleContentOpen] = useState(false);
 
+  const [isPermanentlyClosed, setPermanentlyClosed] = useState(false);
   const toggleContent = () => {
     setIsFeatureToggleContentOpen(!isFeatureToggleContentOpen);
   }
+
+  const closePermanent = (e) => {
+    setPermanentlyClosed(e.currentTarget.checked);
+  }
+
+  if (!isFeatureToggleContentOpen && isPermanentlyClosed) return null; 
 
   return (
     <div className="feature-toggle-wrapper">
@@ -76,7 +83,16 @@ const FeatureFlagPanel = ({
             }
             )}
           </div>
-          <div className="feature-toggle-footer" />
+          <div className="feature-toggle-footer">
+            <div>
+              Hide panel until next refresh
+              <input
+                type="checkbox"
+                name="untilNextRefresh"
+                onChange={closePermanent}
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>
