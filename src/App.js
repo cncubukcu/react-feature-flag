@@ -4,7 +4,7 @@ import { useFeatureFlag } from './FeatureFlag';
 
 function App() {
   const showIcon = useFeatureFlag('showIcon');
-  const lightMode = useFeatureFlag('lightMode');
+  const [lightMode] = useFeatureFlag(['lightMode']);
 
   return (
     <div className="App">
