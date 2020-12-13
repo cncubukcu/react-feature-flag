@@ -1,70 +1,98 @@
-# Getting Started with Create React App
+# Feature Flag
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Installation
 
-## Available Scripts
+```yarn add ...```
 
-In the project directory, you can run:
+## Usage
 
-### `yarn start`
+### Prepare Feature Flag Config
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```javascript
+const config = [{
+    name: 'Light Mode',
+    id: 'lightMode',
+    defaultValue: false,
+  }, {
+    name: 'Show icon',
+    id: 'showIcon',
+    options: [{
+      name: 'Right',
+      value: 'flex-start',
+    }, {
+      name: 'Center',
+      value: 'center',
+    }, {
+      name: 'Left',
+      value: 'flex-end',
+    }],
+    defaultValue: 'flex-start'
+  }
+]
+```
+#### Config Item
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+| property     | type   | required | description                                            |
+|--------------|--------|----------|--------------------------------------------------------|
+| name         | string |    Yes   | Flag's name. It will be written on Flag Panel          |
+| id           | string |    Yes   | Unique property for flag                               |
+| defaultValue | string |    No    | You can use it when you need default value for flag    |
+| options      | array  |    No    | Array of object, which holds options' names and values |
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Feature Flag Provider
+Wrap your root component with `FeatureFlagProvider` and pass your config to it with the `config` prop.
 
-### `yarn build`
+```javascript
+import { FeatureFlagProvider } from './FeatureFlag';
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+ReactDOM.render(
+  <FeatureFlagProvider config={featureConfig}>
+    <App />
+  </FeatureFlagProvider>,
+  document.getElementById('root')
+);
+```
+#### FeatureFlagProvider Props
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| property       | type   | required | description                     |
+|----------------|--------|----------|---------------------------------|
+| config         | object |    No    | Array of config item            |
+| isPanelVisible | bool   |    No    | Set false to hide feature panel |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+### How to get flag value from inside of the React Component
+Use `useFeatureFlag` hook for reaching flag value from `React Component`. You can pass it string(`flag id`) or array of string(`flag id`).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```javascript
+import { useFeatureFlag } from './FeatureFlag';
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+function App() {
+  const showIcon = useFeatureFlag('showIcon');
+  const [lightMode] = useFeatureFlag(['lightMode']);
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  return (
+    <div className="App">
+      <header className={`App-header${lightMode ? ' light' : ''}`}>
+        {showIcon && <img src={logo} className="App-logo" alt="logo" style={{ alignSelf: showIcon }} />}
+      </header>
+    </div>
+  );
+}
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+### How to get flag value from outside of the React Component
+Use `getFeatureFlag` function for reaching flag value wherever you want. You can pass it string(`flag id`) or array of string(`flag id`).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```javascript
+import { getFeatureFlag } from './FeatureFlag';
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+const calculate = () => {
+  return getFeatureFlag('coefficient') * value;
+}
+```
 
-### Code Splitting
+## Feature Flag Panel
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+If the flag value is changed from `Featuer Flag Panel`. Its value will be written to your localstorage. So It wont be reset after refreshing the browser.
