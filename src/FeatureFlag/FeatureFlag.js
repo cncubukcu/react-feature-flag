@@ -24,6 +24,17 @@ export const useFeatureFlag = (key) => {
   return getFeatureFlag(key);
 };
 
+export const extractFeatureFlagsFromConfig = (config) => {
+  return config.map(feature => ({
+    key: feature.id,
+    value: localStorage.getItem(feature.id) || feature.defaultValue || false,
+  }))
+    .reduce((acc, currentFeature) => {
+      acc[currentFeature.key] = currentFeature.value;
+      return acc;
+    }, {});
+}
+
 export class FeatureFlagProvider extends PureComponent {
   static getDerivedStateFromProps(nextProps, prevState) {
     const updates = {};
@@ -42,14 +53,7 @@ export class FeatureFlagProvider extends PureComponent {
     super(props);
     this.state = {
       config: props.config,
-      flags: props.config.map(feature => ({
-        key: feature.id,
-        value: localStorage.getItem(feature.id) || feature.defaultValue || false,
-      }))
-        .reduce((acc, currentFeature) => {
-          acc[currentFeature.key] = currentFeature.value;
-          return acc;
-        }, {}),
+      flags: extractFeatureFlagsFromConfig(props.config),
       getFeatureFlag: this.getFeatureFlag,
     };
 
