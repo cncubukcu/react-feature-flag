@@ -111,11 +111,11 @@ export class FeatureFlagProvider extends PureComponent {
   }
 
   render() {
-    const { children, isPanelOpen } = this.props;
+    const { children, isPanelVisible } = this.props;
     return (
       <FeatureFlagContext.Provider value={this.state}>
         {children}
-        {isPanelOpen && (
+        {isPanelVisible && (
           <FeatureFlagPanel
             config={this.state.config}
             flags={this.state.flags}
@@ -137,10 +137,10 @@ FeatureFlagProvider.propTypes = {
       value: string,
     }))
   })),
-  isPanelOpen: bool,
+  isPanelVisible: bool,
 };
 
 FeatureFlagProvider.defaultProps = {
   config: [],
-  isPanelOpen: true,
+  isPanelVisible: true,
 };
