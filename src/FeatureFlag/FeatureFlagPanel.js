@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { shape, arrayOf, string } from 'prop-types';
+import { shape, arrayOf, string, func } from 'prop-types';
 import './featureFlag.scss';
 import closeSVG from './close.svg';
 import FeatureItem from './FeatureItem';
@@ -105,10 +105,16 @@ FeatureFlagPanel.propTypes = {
     id: string.isRequired,
     enum: arrayOf(string)
   })),
+  flags: shape({}),
+  handleFeatureToggleChange: func,
+  handleOptionValueChange: func,
 };
 
 FeatureFlagPanel.defaultProps = {
   config: [],
+  flags: {},
+  handleFeatureToggleChange: () => () => {},
+  handleOptionValueChange: () => () => {},
 }
 
 export default FeatureFlagPanel;
