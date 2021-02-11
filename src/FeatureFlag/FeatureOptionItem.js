@@ -1,4 +1,11 @@
 import React from 'react';
+import {
+  bool,
+  func,
+  number,
+  shape,
+  string,
+} from 'prop-types';
 
 const FeatureOptionItem = ({
   checked,
@@ -28,6 +35,28 @@ const FeatureOptionItem = ({
       </div>
     </div>
   );
+}
+
+FeatureOptionItem.propTypes = {
+  checked: bool,
+  featureIndex: number,
+  onChange: func,
+  option: shape({
+    value: string,
+    name: string,
+  }),
+  optionIndex: number,
+}
+
+FeatureOptionItem.defaultProps = {
+  checked: false,
+  featureIndex: -1,
+  onChange: () => {},
+  option: {
+    value: '',
+    name: '',
+  },
+  optionIndex: -1,
 }
 
 export default FeatureOptionItem;
