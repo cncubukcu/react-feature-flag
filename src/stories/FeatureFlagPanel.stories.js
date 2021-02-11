@@ -13,6 +13,5 @@ const Template = (args) => <FeatureFlagPanelWrapper {...args} />;
 export const  FeatureFlagPanel = Template.bind({});
 FeatureFlagPanel.args = {
   config: featureConfig,
-  openAtStart: true,
 };
 

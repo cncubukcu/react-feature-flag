@@ -11,9 +11,9 @@ const FeatureFlagPanel = ({
   flags,
   handleFeatureToggleChange,
   handleOptionValueChange,
-  openAtStart
+  openPanelOnMount
 }) => {
-  const [isFeatureToggleContentOpen, setIsFeatureToggleContentOpen] = useState(openAtStart);
+  const [isFeatureToggleContentOpen, setIsFeatureToggleContentOpen] = useState(openPanelOnMount);
 
   const [isPermanentlyClosed, setPermanentlyClosed] = useState(false);
   const toggleContent = () => {
@@ -110,7 +110,7 @@ FeatureFlagPanel.propTypes = {
   flags: shape({}),
   handleFeatureToggleChange: func,
   handleOptionValueChange: func,
-  openAtStart: bool,
+  openPanelOnMount: bool,
 };
 
 FeatureFlagPanel.defaultProps = {
@@ -118,7 +118,7 @@ FeatureFlagPanel.defaultProps = {
   flags: {},
   handleFeatureToggleChange: () => () => {},
   handleOptionValueChange: () => () => {},
-  openAtStart: false,
+  openPanelOnMount: false,
 }
 
 export default FeatureFlagPanel;

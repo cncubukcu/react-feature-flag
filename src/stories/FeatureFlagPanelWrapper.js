@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { bool } from 'prop-types';
 import FeatureFlagPanel from '../FeatureFlag/FeatureFlagPanel';
 import { extractFeatureFlagsFromConfig } from '../FeatureFlag/FeatureFlag';
 
@@ -7,7 +8,7 @@ const getFeatureValue = (feature, isChecked) => {
   return feature.options ? feature.options[0].value : true;
 }
 
-export const FeatureFlagPanelWrapper = ({ config: _config, openAtStart }) => {
+export const FeatureFlagPanelWrapper = ({ config: _config, openPanelOnMount }) => {
   const [config, setConfig] = useState(_config);
   useEffect(() => {
     setConfig(_config);
@@ -39,7 +40,15 @@ export const FeatureFlagPanelWrapper = ({ config: _config, openAtStart }) => {
       flags={flags}
       handleOptionValueChange={handleOptionValueChange}
       handleFeatureToggleChange={handleFeatureToggleChange}
-      openAtStart={openAtStart}
+      openPanelOnMount={openPanelOnMount}
     />
   )
+}
+
+FeatureFlagPanelWrapper.propTypes = {
+  openPanelOnMount: bool,
+}
+
+FeatureFlagPanelWrapper.defaultProps = {
+  openPanelOnMount: true,
 }
