@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { shape, arrayOf, string, func } from 'prop-types';
+import { bool, shape, arrayOf, string, func } from 'prop-types';
 import './featureFlag.scss';
 import { ReactComponent as CloseSVG } from './close.svg';
 import { ReactComponent as GearSVG } from './gear.svg';
@@ -10,9 +10,10 @@ const FeatureFlagPanel = ({
   config,
   flags,
   handleFeatureToggleChange,
-  handleOptionValueChange
+  handleOptionValueChange,
+  openAtStart
 }) => {
-  const [isFeatureToggleContentOpen, setIsFeatureToggleContentOpen] = useState(false);
+  const [isFeatureToggleContentOpen, setIsFeatureToggleContentOpen] = useState(openAtStart);
 
   const [isPermanentlyClosed, setPermanentlyClosed] = useState(false);
   const toggleContent = () => {
@@ -109,6 +110,7 @@ FeatureFlagPanel.propTypes = {
   flags: shape({}),
   handleFeatureToggleChange: func,
   handleOptionValueChange: func,
+  openAtStart: bool,
 };
 
 FeatureFlagPanel.defaultProps = {
@@ -116,6 +118,7 @@ FeatureFlagPanel.defaultProps = {
   flags: {},
   handleFeatureToggleChange: () => () => {},
   handleOptionValueChange: () => () => {},
+  openAtStart: false,
 }
 
 export default FeatureFlagPanel;

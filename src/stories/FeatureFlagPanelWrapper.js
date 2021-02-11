@@ -7,7 +7,7 @@ const getFeatureValue = (feature, isChecked) => {
   return feature.options ? feature.options[0].value : true;
 }
 
-export const FeatureFlagPanelWrapper = ({ config: _config }) => {
+export const FeatureFlagPanelWrapper = ({ config: _config, openAtStart }) => {
   const [config, setConfig] = useState(_config);
   useEffect(() => {
     setConfig(_config);
@@ -39,6 +39,7 @@ export const FeatureFlagPanelWrapper = ({ config: _config }) => {
       flags={flags}
       handleOptionValueChange={handleOptionValueChange}
       handleFeatureToggleChange={handleFeatureToggleChange}
+      openAtStart={openAtStart}
     />
   )
 }
