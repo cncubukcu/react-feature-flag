@@ -24,10 +24,10 @@ export const useFeatureFlag = (key) => {
   return getFeatureFlag(key);
 };
 
-export const extractFeatureFlagsFromConfig = (config) => {
+export const extractFeatureFlagsFromConfig = (config, useLocalStorage = true) => {
   return config.map(feature => ({
     key: feature.id,
-    value: localStorage.getItem(feature.id) || feature.defaultValue || false,
+    value: (useLocalStorage && localStorage.getItem(feature.id)) || feature.defaultValue || false,
   }))
     .reduce((acc, currentFeature) => {
       acc[currentFeature.key] = currentFeature.value;
