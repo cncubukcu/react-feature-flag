@@ -6,6 +6,8 @@
 
 ## Usage
 
+[Stories & Documentation](https://react-feature-flag.netlify.app/)
+
 ### Prepare Feature Flag Config
 
 ```javascript
